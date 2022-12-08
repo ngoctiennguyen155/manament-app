@@ -1,12 +1,15 @@
 const router = require("express").Router();
-const model = require("../models");
-const database = require("../config")
+const { getDocs } = require("firebase/firestore/lite");
+// const model = require("../models");
+const database = require("../config");
 router.get("/", async (req, res) => {
-  const {Product} = database
   try {
-    const get = await Product.get();
+    const { Product } = database;
+    const citySnapshot = await getDocs(Product);
+    const cityList = citySnapshot.docs.map((doc) => doc.data());
     // const products = await model.product.find({});
-    return res.json({ get });
+    console.log({ cityList });
+    return res.json({ a: "123" });
   } catch (error) {
     return res.status(500).send(error);
   }
